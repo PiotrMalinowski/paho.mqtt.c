@@ -683,7 +683,7 @@ MQTTAsync_queuedCommand* MQTTAsync_restoreCommand(char* buffer, int buflen)
 				strcpy(command->details.sub.topics[i], ptr);
 				ptr += data_size;
 				
-				command->details.sub.qoss[i] = *(int*)ptr;
+				memcpy(&command->details.sub.qoss[i], ptr, sizeof(int));
 				ptr += sizeof(int);
 			}			
 			break;
@@ -708,7 +708,7 @@ MQTTAsync_queuedCommand* MQTTAsync_restoreCommand(char* buffer, int buflen)
 			strcpy(command->details.pub.destinationName, ptr);
 			ptr += data_size;
 			
-			command->details.pub.payloadlen = *(int*)ptr;
+			memcpy(&command->details.pub.payloadlen, ptr, sizeof(int));
 			ptr += sizeof(int);
 			
 			data_size = command->details.pub.payloadlen;
@@ -716,10 +716,10 @@ MQTTAsync_queuedCommand* MQTTAsync_restoreCommand(char* buffer, int buflen)
 			memcpy(command->details.pub.payload, ptr, data_size);
 			ptr += data_size;
 			
-			command->details.pub.qos = *(int*)ptr;
+			memcpy(&command->details.pub.qos, ptr, sizeof(int));
 			ptr += sizeof(int);
 			
-			command->details.pub.retained = *(int*)ptr;
+			memcpy(&command->details.pub.retained, ptr, sizeof(int));
 			ptr += sizeof(int);	
 			break;
 			
